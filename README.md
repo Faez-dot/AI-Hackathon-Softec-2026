@@ -1,0 +1,1 @@
+# AI-Hackathon-Softec-2026
