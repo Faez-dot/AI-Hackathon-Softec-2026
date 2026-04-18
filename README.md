@@ -62,7 +62,26 @@ This project is based on the SOFTEC 2026 AI Hackathon problem statement.
    - Detected opportunities  
    - Extracted details  
    - Ranked list  
-   - Action steps  
+   - Action steps
+
+## Sample data
+BS CS
+
+6th
+
+3.45
+Islamabad
+
+High
+
+Internships
+
+Python, Machine Learning
+
+Built MERN stack web apps
+Completed ML course project on classification
+Participated in university hackathon
+Worked on REST APIs
 
 
 ##  Key Idea
@@ -76,6 +95,7 @@ This is not just summarization — the system:
 
 
 ##  Team
+
 fast islamabad
 muhammad hashir
 faez ahmed
