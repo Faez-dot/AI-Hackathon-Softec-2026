@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import './App.css';
+import TextPressure from './TextPressure';
 
 function App() {
   const [profile, setProfile] = useState({
@@ -18,6 +19,22 @@ function App() {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const content = evt.target.result;
+      if (content.trim()) {
+        setEmails(prev => [...prev, content.trim()]);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = null;
+  };
 
   const handleProfileChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
@@ -67,7 +84,20 @@ function App() {
   return (
     <div className="app-container">
       <header className="hero-section">
-        <h1>AI Opportunity Intelligence</h1>
+        <div style={{ position: 'relative', height: '100px', marginBottom: '1rem' }}>
+          <TextPressure
+            text="AI OPPORTUNITY INTELLIGENCE"
+            flex
+            alpha={false}
+            stroke={false}
+            width
+            weight
+            italic
+            textColor="#ffffff"
+            strokeColor="#5227FF"
+            minFontSize={36}
+          />
+        </div>
         <p>Rank and analyze student opportunities instantly.</p>
       </header>
 
@@ -89,15 +119,25 @@ function App() {
         <section className="glass-panel emails-section">
           <h2>Opportunity Emails</h2>
           <div className="email-input-group">
-            <textarea 
-              placeholder="Paste email content here..." 
-              value={emailInput} 
+            <textarea
+              placeholder="Paste email content here..."
+              value={emailInput}
               onChange={(e) => setEmailInput(e.target.value)}
               rows={4}
             />
-            <button onClick={addEmail} className="btn-secondary">Add Email</button>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+              <button onClick={addEmail} className="btn-secondary">Add Text</button>
+              <input
+                type="file"
+                accept=".txt"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                onChange={handleFileUpload}
+              />
+              <button onClick={() => fileInputRef.current?.click()} className="btn-secondary">Upload .txt</button>
+            </div>
           </div>
-          
+
           <div className="email-list">
             {emails.map((email, idx) => (
               <div key={idx} className="email-item">
@@ -107,8 +147,8 @@ function App() {
             ))}
           </div>
 
-          <button 
-            className="btn-primary analyze-btn" 
+          <button
+            className="btn-primary analyze-btn"
             onClick={analyzeOpportunities}
             disabled={loading || emails.length === 0}
           >
@@ -129,7 +169,7 @@ function App() {
                   <h3>{opp.title || 'Unknown Opportunity'}</h3>
                   <div className={`urgency-badge ${(opp.urgencyLevel || '').toLowerCase()}`}>{opp.urgencyLevel || 'Unknown'}</div>
                 </div>
-                
+
                 <div className="score-breakdown">
                   <div className="total-score">
                     <span className="score-val">{opp.score?.total || (typeof opp.score === 'number' ? opp.score : 0)}</span>
@@ -146,7 +186,35 @@ function App() {
                 <div className="card-body">
                   <h4>Why it's relevant</h4>
                   <p>{opp.reason || 'No reason provided.'}</p>
-                  
+
+                  {opp.extractedDetails && (
+                    <div className="extracted-details">
+                      <h4>Key Details</h4>
+                      <div className="details-grid">
+                        <div className="detail-item"><strong>Type:</strong> {opp.extractedDetails.opportunityType || 'N/A'}</div>
+                        <div className="detail-item"><strong>Deadline:</strong> <span className="highlight-deadline">{opp.extractedDetails.deadline || 'N/A'}</span></div>
+                        <div className="detail-item full-width"><strong>Contact:</strong> {opp.extractedDetails.contactInfo || 'N/A'}</div>
+
+                        {opp.extractedDetails.eligibilityCriteria && opp.extractedDetails.eligibilityCriteria.length > 0 && (
+                          <div className="detail-item full-width">
+                            <strong>Eligibility:</strong>
+                            <ul className="mini-list">
+                              {opp.extractedDetails.eligibilityCriteria.map((item, i) => <li key={i}>{item}</li>)}
+                            </ul>
+                          </div>
+                        )}
+                        {opp.extractedDetails.requiredDocuments && opp.extractedDetails.requiredDocuments.length > 0 && (
+                          <div className="detail-item full-width">
+                            <strong>Required Documents:</strong>
+                            <ul className="mini-list">
+                              {opp.extractedDetails.requiredDocuments.map((item, i) => <li key={i}>{item}</li>)}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   <h4>Action Checklist</h4>
                   <ul className="checklist">
                     {Array.isArray(opp.actionChecklist) ? opp.actionChecklist.map((step, i) => (

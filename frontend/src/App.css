@@ -88,7 +88,8 @@ body {
   grid-column: span 2;
 }
 
-input, textarea {
+input,
+textarea {
   width: 100%;
   padding: 0.75rem 1rem;
   background: rgba(0, 0, 0, 0.2);
@@ -99,7 +100,8 @@ input, textarea {
   transition: border-color 0.3s;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   outline: none;
   border-color: var(--accent);
 }
@@ -114,8 +116,10 @@ input:focus, textarea:focus {
 .btn-secondary {
   background: rgba(255, 255, 255, 0.1);
   color: white;
+  width: 100%;
   border: 1px solid var(--glass-border);
   padding: 0.75rem;
+  margin-top: 35px;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
@@ -163,6 +167,7 @@ input:focus, textarea:focus {
   padding: 1rem 2rem;
   border-radius: 8px;
   font-size: 1.1rem;
+  margin-top: 0px;
   font-weight: 600;
   cursor: pointer;
   width: 100%;
@@ -183,14 +188,16 @@ input:focus, textarea:focus {
   display: inline-block;
   width: 20px;
   height: 20px;
-  border: 3px solid rgba(255,255,255,0.3);
+  border: 3px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   border-top-color: white;
   animation: spin 1s ease-in-out infinite;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .error-alert {
@@ -255,10 +262,29 @@ input:focus, textarea:focus {
   text-transform: uppercase;
 }
 
-.urgency-badge.high { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid #ef4444; }
-.urgency-badge.medium { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid #f59e0b; }
-.urgency-badge.low { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid #10b981; }
-.urgency-badge.spam { background: rgba(100, 116, 139, 0.2); color: #cbd5e1; border: 1px solid #64748b; }
+.urgency-badge.high {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid #ef4444;
+}
+
+.urgency-badge.medium {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fcd34d;
+  border: 1px solid #f59e0b;
+}
+
+.urgency-badge.low {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+  border: 1px solid #10b981;
+}
+
+.urgency-badge.spam {
+  background: rgba(100, 116, 139, 0.2);
+  color: #cbd5e1;
+  border: 1px solid #64748b;
+}
 
 .score-breakdown {
   background: rgba(0, 0, 0, 0.2);
@@ -330,4 +356,50 @@ input:focus, textarea:focus {
   position: absolute;
   left: 0;
   color: var(--accent);
+}
+
+.extracted-details {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--glass-border);
+}
+
+.extracted-details h4 {
+  margin-bottom: 1rem;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.detail-item {
+  color: var(--text-muted);
+}
+
+.detail-item strong {
+  color: var(--text-main);
+}
+
+.detail-item.full-width {
+  grid-column: span 2;
+}
+
+.highlight-deadline {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.mini-list {
+  margin: 0.25rem 0 0 1rem;
+  padding: 0;
+  color: var(--text-muted);
+}
+
+.mini-list li {
+  margin-bottom: 0.25rem;
 }

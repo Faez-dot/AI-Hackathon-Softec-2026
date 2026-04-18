@@ -49,7 +49,7 @@ app.post('/api/analyze-opportunities', async (req, res) => {
         const prompt = `You are an AI Opportunity Intelligence Engine.
 EMAILS: ${JSON.stringify(emails)}
 PROFILE: ${JSON.stringify(profile)}
-TASK: 1. Classify (Include ALL emails, even spam/irrelevant) 2. Extract 3. Match 4. Score (Fit 40%, Urgency 25%, Benefit 20%, Effort 15%. Give spam/irrelevant emails a score of 0) 5. Rank EVERY email from highest to lowest score.
+TASK: 1. Classify (Include ALL emails, even spam/irrelevant). 2. Extract structured fields. 3. Match against profile. 4. Score (Fit 40%, Urgency 25%, Benefit 20%, Effort 15%. Give spam/irrelevant emails a score of 0) based on how well it fits the student profile. 5. Rank EVERY email from highest to lowest score.
 OUTPUT EXACTLY A VALID JSON ARRAY OF OBJECTS WITH NO MARKDOWN FORMATTING OR CODEBLOCKS.
 Format of each object:
 {
@@ -64,7 +64,14 @@ Format of each object:
   },
   "reason": "string (Why relevant or why it was classified as spam)",
   "urgencyLevel": "High" | "Medium" | "Low" | "Spam",
-  "actionChecklist": ["step 1", "step 2"] // empty if spam
+  "extractedDetails": {
+    "opportunityType": "string",
+    "deadline": "string",
+    "eligibilityCriteria": ["string"],
+    "requiredDocuments": ["string"],
+    "contactInfo": "string"
+  },
+  "actionChecklist": ["step 1", "step 2"]
 }`;
         
         const result = await model.generateContent(prompt);
